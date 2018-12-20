@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use Session;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -38,12 +39,18 @@ class CategoryController extends Controller
         $this->validate($request,[
             'category'     => 'required'
         ]);
+        try{
+            $category = Category::create([
+                'category' => $request->category
+            ]);
 
-        $category = Category::create([
-            'category' => $request->category
-        ]);
-
-        $category->save();
+            $category->save();
+            Session::flash('success','New category created successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('category.index');
     }
 
@@ -79,14 +86,20 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $category = Category::find($id);
+
         $this->validate($request,[
             'category'     => 'required'
         ]);
-
-        $category->category = $request->category;
-
-        $category->save();
+        try{
+            $category = Category::find($id);
+            $category->category = $request->category;
+            $category->save();
+            Session::flash('success','The category updated successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('category.index');
     }
 
@@ -98,8 +111,15 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::find($id);
-        $category->delete();
+        try{
+            $category = Category::find($id);
+            $category->delete();
+            Session::flash('success','The category deleted successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('category.index');
     }
 }

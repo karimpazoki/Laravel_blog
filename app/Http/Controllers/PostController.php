@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Post;
 use App\Category;
+use Session;
 
 class PostController extends Controller
 {
@@ -43,13 +44,20 @@ class PostController extends Controller
             'content'   => 'required',
         ]);
 
-        $post = Post::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'category_id' => $request->category
-        ]);
 
-        $post->save();
+        try {
+            $post = Post::create([
+                'title' => $request->title,
+                'content' => $request->content,
+                'category_id' => $request->category
+            ]);
+            $post->save();
+            Session::flash('success', 'New post created successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('post.index');
     }
 
@@ -86,16 +94,25 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
+
+
         $this->validate($request,[
             'title'     => 'required',
             'content'   => 'required'
         ]);
-        $post->title    = $request->get('title');
-        $post->content  = $request->get('content');
-        $post->category_id   = $request->get('category');
+        try{
+            $post = Post::find($id);
+            $post->title    = $request->get('title');
+            $post->content  = $request->get('content');
+            $post->category_id   = $request->get('category');
 
-        $post->save();
+            $post->save();
+            Session::flash('success','The post updated successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('post.index');
     }
 
@@ -107,8 +124,15 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        $post->delete();
+        try{
+            $post = Post::find($id);
+            $post->delete();
+            Session::flash('success','The post deleted successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
         return redirect()->route('post.index');
     }
 }
