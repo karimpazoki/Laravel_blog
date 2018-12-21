@@ -21,6 +21,16 @@ class PostController extends Controller
     }
 
     /**
+     * Display a listing of the trashed resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trashed()
+    {
+        return view('post.trashed')->with('posts', Post::onlyTrashed()->get());
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -127,12 +137,40 @@ class PostController extends Controller
         try{
             $post = Post::find($id);
             $post->delete();
-            Session::flash('success','The post deleted successfully.');
+            Session::flash('success','The post moved to trash.');
         }
         catch (\Exception $e)
         {
             Session::flash('error', $e->getMessage());
         }
         return redirect()->route('post.index');
+    }
+
+    public function restore($id)
+    {
+        try{
+            $post = Post::withTrashed()->where('id',$id)->first();
+            $post->restore();
+            Session::flash('success','The post restored successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
+        return redirect()->route('post.trashed');
+    }
+
+    public function kill($id)
+    {
+        try{
+            $post = Post::withTrashed()->where('id',$id)->first();
+            $post->forceDelete();
+            Session::flash('success','The post deleted successfully.');
+        }
+        catch (\Exception $e)
+        {
+            Session::flash('error', $e->getMessage());
+        }
+        return redirect()->route('post.trashed');
     }
 }

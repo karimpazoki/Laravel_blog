@@ -16,6 +16,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Edit</th>
+                                    <th scope="col">Restore</th>
                                     <th scope="col">Trash</th>
                                 </tr>
                             </thead>
@@ -29,14 +30,10 @@
                                             <a href="{{action('PostController@edit', $post['id'])}}" class="btn btn-sm btn-outline-info">Edit</a>
                                         </td>
                                         <td>
-                                            <form action="{{action('PostController@destroy', $post['id'])}}" method="POST" style="display:inline-block">
-                                                {{ csrf_field() }}
-                                                {{ method_field('DELETE') }}
-                                                <button class="btn btn-outline-danger btn-sm">
-                                                    Trash
-                                                </button>
-                                            </form>
-                                            {{--<a href="{{action('PostController@destroy', $post['id'])}}" class="btn btn-sm btn-outline-danger">Delete</a>--}}
+                                            <a href="{{action('PostController@restore', $post['id'])}}" class="btn btn-sm btn-outline-success">Restore</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{action('PostController@kill', $post['id'])}}" class="btn btn-sm btn-outline-danger">Delete</a>
                                         </td>
                                     </tr>
                                 @endforeach
