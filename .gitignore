@@ -5,10 +5,10 @@ npm-debug.log
 # Laravel 4 specific
 bootstrap/compiled.php
 app/storage/
-app/public/uploads/featured
 
 # Laravel 5 & Lumen specific
 public/storage
+app/public/uploads/featured/
 public/hot
 storage/*.key
 .env.*.php
