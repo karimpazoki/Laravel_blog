@@ -54,13 +54,24 @@ class PostController extends Controller
             'content'   => 'required',
         ]);
 
-
         try {
+
+            $featured = $request->featured;
+            $featured_new_name = Null;
+            if($featured != Null) {
+                $featured_new_name = time() . $featured->getClientOriginalName();
+                $featured->move('uploads/featured', $featured_new_name);
+                $featured = 'uploads/featured/'.$featured_new_name;
+            }
+
             $post = Post::create([
                 'title' => $request->title,
                 'content' => $request->content,
-                'category_id' => $request->category
+                'category_id' => $request->category,
+                'featured'  => $featured,
+                'slug'  => str_slug($request->title)
             ]);
+
             $post->save();
             Session::flash('success', 'New post created successfully.');
         }
@@ -115,6 +126,13 @@ class PostController extends Controller
             $post->title    = $request->get('title');
             $post->content  = $request->get('content');
             $post->category_id   = $request->get('category');
+            if($request->hasFile('featured'))
+            {
+                $featured = $request->featured;
+                $featured_new_name = time() . $featured->getClientOriginalName();
+                $featured->move('uploads/featured', $featured_new_name);
+                $post->featured = 'uploads/featured/'.$featured_new_name;
+            }
 
             $post->save();
             Session::flash('success','The post updated successfully.');

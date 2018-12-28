@@ -9,7 +9,7 @@
                     <div class="card-header">Create new post</div>
 
                     <div class="card-body">
-                        <form action="{{ action('PostController@update', $post->id) }}" method="post">
+                        <form action="{{ action('PostController@update', $post->id) }}" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <input type="hidden" name="_method" value="put" />
                             <div class="form-group row">
@@ -36,6 +36,9 @@
                                     @endforeach
 
                                 </select>
+                            </div>
+                            <div class="form-group row">
+                                <input type="file" class="form-control" accept="image/*" name="featured">
                             </div>
                             <div class="form-group row">
                                 <label for="content" class="col-form-label">content</label>

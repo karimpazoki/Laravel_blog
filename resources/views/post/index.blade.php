@@ -13,7 +13,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Image</th>
                                     <th scope="col">Title</th>
                                     <th scope="col">Edit</th>
                                     <th scope="col">Trash</th>
@@ -22,7 +22,9 @@
                             <tbody>
                                 @foreach($posts as $post)
                                     <tr>
-                                        <td>{{ $post->id }} </td>
+                                        <td>
+                                            <img src="{{ $post->featured }}" alt="{{ $post->title }}" width="50px">
+                                        </td>
 
                                         <td>{{ $post->title }}</td>
                                         <td>

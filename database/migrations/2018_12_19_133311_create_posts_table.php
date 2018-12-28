@@ -17,8 +17,9 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title')->unique();
             $table->text('content');
-            $table->unsignedInteger('category_id')->nullable();//->default(0)
-            $table->string('featured')->nullable();
+            $table->unsignedInteger('category_id')->nullable();
+            $table->string('featured')->default('images/Default.png');
+            $table->string('slug')->unique();
             $table->softDeletes();
             $table->timestamps();
 //          $table->foreign('category_id')->references('id')->on('categories')->onDelete('set default');

@@ -13,9 +13,8 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
+                                    <th scope="col">Image</th>
                                     <th scope="col">Title</th>
-                                    <th scope="col">Edit</th>
                                     <th scope="col">Restore</th>
                                     <th scope="col">Trash</th>
                                 </tr>
@@ -23,12 +22,12 @@
                             <tbody>
                                 @foreach($posts as $post)
                                     <tr>
-                                        <td>{{ $post->id }} </td>
+                                        <td>
+                                            <img src="{{ $post->featured }}" alt="{{ $post->title }}" width="50px">
+                                        </td>
 
                                         <td>{{ $post->title }}</td>
-                                        <td>
-                                            <a href="{{action('PostController@edit', $post['id'])}}" class="btn btn-sm btn-outline-info">Edit</a>
-                                        </td>
+
                                         <td>
                                             <a href="{{action('PostController@restore', $post['id'])}}" class="btn btn-sm btn-outline-success">Restore</a>
                                         </td>
