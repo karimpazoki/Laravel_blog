@@ -8,6 +8,10 @@
 
         <li class="list-group-item"><a href="{{ route('category.index') }}">Categories</a></li>
         <li class="list-group-item"><a href="{{ route('category.create') }}">Create new Category</a></li>
+
+
+        <li class="list-group-item"><a href="{{ route('tags.index') }}">Tags</a></li>
+        <li class="list-group-item"><a href="{{ route('tags.create') }}">Create new tag</a></li>
         {{--li.list-group-item>a--}}
     </ul>
 </div>

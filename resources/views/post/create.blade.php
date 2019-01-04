@@ -27,7 +27,18 @@
                             <div class="form-group row">
                                 <input type="file" class="form-control" accept="image/*" name="featured">
                             </div>
-                            
+
+                            <div class="form-group">
+                                <label for="tags">Select Tags</label>
+                                @foreach($tags as $tag)
+                                    <div class="checkbox">
+                                        <label for="">
+                                            <input name="tags[]" type="checkbox" value="{{ $tag->id }}">{{ $tag->tag }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+
                             <div class="form-group row">
                                 <label for="content" class="col-form-label">content</label>
                                 <textarea class="form-control" col="5" row="5" id="content" name="content"></textarea>

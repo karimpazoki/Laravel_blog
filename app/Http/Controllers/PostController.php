@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use Illuminate\Http\Request;
 
 use App\Post;
@@ -38,7 +39,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('post.create')->with('categories', $categories);
+        return view('post.create')->with('categories', $categories)
+                                        ->with('tags',Tag::all());
     }
 
     /**
@@ -52,6 +54,7 @@ class PostController extends Controller
         $this->validate($request,[
             'title'     => 'required',
             'content'   => 'required',
+            'tags'   => 'required',
         ]);
 
         try {
@@ -71,6 +74,8 @@ class PostController extends Controller
                 'featured'  => $featured,
                 'slug'  => str_slug($request->title)
             ]);
+
+            $post->tags()->attach($request->tags);
 
             $post->save();
             Session::flash('success', 'New post created successfully.');
@@ -103,7 +108,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
-        return view('post.edit')->with('post',$post)->with('categories', $categories);
+        return view('post.edit')->with('post',$post)
+                                    ->with('categories', $categories)
+                                    ->with('tags', Tag::all());
     }
 
     /**
@@ -119,7 +126,8 @@ class PostController extends Controller
 
         $this->validate($request,[
             'title'     => 'required',
-            'content'   => 'required'
+            'content'   => 'required',
+            'tags'      => 'required'
         ]);
         try{
             $post = Post::find($id);
@@ -135,6 +143,7 @@ class PostController extends Controller
             }
 
             $post->save();
+            $post->tags()->sync($request->tags);
             Session::flash('success','The post updated successfully.');
         }
         catch (\Exception $e)
